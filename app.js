@@ -42,15 +42,18 @@
     const rows = state.records;
     $("recordStatus").textContent = rows.length ? rows.length + (rows.length === 1 ? " saved record" : " saved records") : "No records yet";
     $("mealCount").textContent = rows.length;
-    $("avgPrice").textContent = rows.length ? money(average(rows.map(r=>r.price))) : "—";
-    $("avgProtein").textContent = rows.length ? formatNumber(average(rows.map(r=>r.protein))) + " g" : "—";
+    $("avgPrice").textContent = rows.length ? money(average(rows.map(r=>r.price))) : "Add meal";
+    $("avgProtein").textContent = rows.length ? formatNumber(average(rows.map(r=>r.protein))) + " g" : "Add meal";
     const values = rows.map(proteinCost).filter(v=>v !== null);
-    $("bestValue").textContent = values.length ? money(Math.min(...values)) : "—";
+    $("bestValue").textContent = values.length ? money(Math.min(...values)) : (rows.length ? "Add protein" : "Add meal");
+    $("avgPrice").disabled = rows.length > 0;
+    $("avgProtein").disabled = rows.length > 0;
+    $("bestValue").disabled = values.length > 0;
   }
   function renderChart() {
     const host = $("comparisonChart"), rows = [...state.records].sort((a,b)=>a.price-b.price).slice(0,6);
     if (!rows.length) {
-      host.innerHTML = '<div class="empty-chart"><span>＋</span><strong>Your comparison will appear here</strong><small>Add at least one meal with its price and protein value.</small></div>'; return;
+      host.innerHTML = '<div class="empty-chart"><span>＋</span><strong>Your comparison is ready to build</strong><small>Record a real meal to see price and protein side by side.</small><button class="button button-primary button-small empty-add-meal" data-add-meal type="button">Add meal</button></div>'; return;
     }
     const maxPrice = Math.max(...rows.map(r=>r.price),1), maxProtein = Math.max(...rows.map(r=>r.protein),1);
     host.innerHTML = rows.map(r => {
@@ -61,7 +64,7 @@
   function renderInsights() {
     const host = $("insights"), rows = state.records;
     if (!rows.length) {
-      host.innerHTML = '<div class="insight-empty"><span>✳</span><p>Insights appear after you add meal records. MealMap only reports patterns supported by your data.</p></div>'; return;
+      host.innerHTML = '<div class="insight-empty"><span>✳</span><p>Add a real meal record to generate insights from your own data.</p><button class="button button-primary button-small empty-add-meal" data-add-meal type="button">Add meal</button></div>'; return;
     }
     const prices = rows.map(r=>r.price), proteins = rows.map(r=>r.protein);
     const cheapest = [...rows].sort((a,b)=>a.price-b.price)[0];
@@ -85,7 +88,7 @@
     if (!rows.length) {
       $("mealTableBody").innerHTML = '<tr class="empty-row"><td colspan="7"><div class="table-empty"><span>◌</span><strong>'+(state.records.length?"No matching meals":"No meal records yet")+'</strong><small>'+(state.records.length?"Try a different search term.":"Add a meal using information from a real menu or nutrition source.")+'</small></div></td></tr>'; return;
     }
-    $("mealTableBody").innerHTML = rows.map(r => '<tr><td><span class="meal-cell">'+escapeHtml(r.name)+'</span><span class="meal-category">'+escapeHtml(r.category||"Other")+(r.note?" · "+escapeHtml(r.note):"")+'</span></td><td>'+escapeHtml(r.date)+'</td><td class="value-strong">'+money(r.price)+'</td><td>'+formatNumber(r.calories,0)+' kcal</td><td>'+formatNumber(r.protein)+' g</td><td>'+ (proteinCost(r)===null?"—":money(proteinCost(r)))+'</td><td><div class="row-actions"><button class="row-action" data-action="edit" data-id="'+escapeHtml(r.id)+'" type="button">Edit</button><button class="row-action" data-action="delete" data-id="'+escapeHtml(r.id)+'" type="button" aria-label="Delete '+escapeHtml(r.name)+'">Delete</button></div></td></tr>').join("");
+    $("mealTableBody").innerHTML = rows.map(r => '<tr><td><span class="meal-cell">'+escapeHtml(r.name)+'</span><span class="meal-category">'+escapeHtml(r.category||"Other")+(r.note?" · "+escapeHtml(r.note):"")+'</span></td><td>'+escapeHtml(r.date)+'</td><td class="value-strong">'+money(r.price)+'</td><td>'+formatNumber(r.calories,0)+' kcal</td><td>'+formatNumber(r.protein)+' g</td><td>'+ (proteinCost(r)===null?"Not calculated":money(proteinCost(r)))+'</td><td><div class="row-actions"><button class="row-action" data-action="edit" data-id="'+escapeHtml(r.id)+'" type="button">Edit</button><button class="row-action" data-action="delete" data-id="'+escapeHtml(r.id)+'" type="button" aria-label="Delete '+escapeHtml(r.name)+'">Delete</button></div></td></tr>').join("");
   }
   function openForm(record) {
     state.editingId = record?.id || null;
@@ -169,7 +172,7 @@
     const budget=number($("dailyBudget").value), targetRaw=$("proteinTarget").value.trim(), target=targetRaw===""?null:number(targetRaw);
     if(!Number.isFinite(budget)||budget<=0){notify("Enter a daily budget greater than ₹0.");$("dailyBudget").focus();return;}
     if(target!==null&&(!Number.isFinite(target)||target<0)){notify("Enter a valid protein target or leave it blank.");return;}
-    if(!state.records.length){notify("Add real meal records before running the planner.");return;}
+    if(!state.records.length){$("plannerResults").innerHTML='<div class="planner-empty"><span>◎</span><h3>Add a meal to start planning</h3><p>Your budget analysis uses only the meal prices and nutrition details you record.</p><button class="button button-primary button-small empty-add-meal" data-add-meal type="button">Add meal</button></div>';return;}
     const affordable=state.records.filter(r=>r.price<=budget).sort((a,b)=>(proteinCost(a)??Infinity)-(proteinCost(b)??Infinity));
     const targetMet=target===null?[]:affordable.filter(r=>r.protein>=target);
     const bestProtein=affordable.slice().sort((a,b)=>b.protein-a.protein)[0];
@@ -180,7 +183,8 @@
     host.innerHTML='<div class="planner-result-head"><div><p class="eyebrow">BASED ON YOUR SAVED RECORDS</p><h3>Options within your budget</h3></div><span class="budget-chip">'+money(budget)+' / day</span></div><div class="planner-summary"><div class="planner-stat"><small>Affordable options</small><strong>'+affordable.length+'</strong></div><div class="planner-stat"><small>Highest protein</small><strong>'+formatNumber(bestProtein.protein)+' g</strong></div><div class="planner-stat"><small>Meets protein target</small><strong>'+(target===null?"Not set":targetMet.length)+'</strong></div></div><div class="planner-options">'+options.map(r=>'<div class="planner-option"><div><strong>'+escapeHtml(r.name)+'</strong><small>'+formatNumber(r.protein)+' g protein · '+formatNumber(r.calories,0)+' kcal</small></div><b>'+money(r.price)+'</b></div>').join("")+'</div><p class="planner-note">'+(target===null?"Set an optional protein target to count which individual meal options meet it.":targetMet.length+" of "+affordable.length+" affordable recorded options meet the entered "+formatNumber(target,0)+" g per-meal target.")+' '+(bestValue?"Best protein affordability among affordable options: "+escapeHtml(bestValue.name)+".":"No positive protein values were recorded.")+' These are individual meal comparisons, not a complete daily diet plan.</p>';
   }
   function wireEvents() {
-    ["addMealTop","addMealHero","addMealRecords"].forEach(id=>$(id).addEventListener("click",()=>openForm()));
+    ["addMealTop","addMealHero","addMealRecords","avgPrice","avgProtein","bestValue"].forEach(id=>$(id).addEventListener("click",()=>openForm()));
+    document.addEventListener("click",e=>{if(e.target.closest("[data-add-meal]"))openForm();});
     $("closeForm").addEventListener("click",closeForm);$("cancelForm").addEventListener("click",closeForm);$("mealForm").addEventListener("submit",submitForm);
     $("mealSearch").addEventListener("input",renderTable);
     $("mealTableBody").addEventListener("click",e=>{const btn=e.target.closest("button[data-action]");if(!btn)return;const r=state.records.find(x=>x.id===btn.dataset.id);if(!r)return;if(btn.dataset.action==="edit")openForm(r);if(btn.dataset.action==="delete")deleteRecord(r.id);});
