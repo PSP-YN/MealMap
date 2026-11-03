@@ -5,7 +5,7 @@
 **Team:** CHAKRAVYUHA  
 **Presenter:** Putta Shankar Prasad Y N  
 **Approach:** Descriptive statistics and data analytics; no AI/ML claim.
-**Live prototype:** https://mealmap-ochre.vercel.app
+**Live prototype:** https://meal-map-analytics.vercel.app
 
 ## Problem
 Students often choose meals using price alone. Comparing price with serving-level nutrition information can help them understand affordability trade-offs. The project provides a simple way to record meal options and compare them using consistent calculations.
