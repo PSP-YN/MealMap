@@ -156,6 +156,7 @@
       const missing=required.filter(h=>!headers.includes(h)); if(missing.length)throw new Error("Missing columns: "+missing.join(", "));
       const imported=[]; let skipped=0;
       for(const cells of rows.slice(1)){if(cells.every(v=>!v.trim()))continue;const obj={};headers.forEach((h,i)=>obj[h]=cells[i]??"");
+        if(!String(obj.price??"").trim()||!String(obj.calories??"").trim()||!String(obj.protein??"").trim()){skipped++;continue;}
         const r={id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),date:obj.date.trim(),name:obj.name.trim(),category:(obj.category||"Other").trim()||"Other",price:number(obj.price),calories:number(obj.calories),protein:number(obj.protein),note:(obj.note||"").trim()};
         if(isValidRecord(r)&&!validateForm(r))imported.push(r);else skipped++;
       }
