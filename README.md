@@ -6,7 +6,7 @@
 MealMap is a lightweight web application that helps students compare the listed price of meal options with selected serving-level nutrition information. It uses transparent descriptive statistics and data visualization—not AI or machine learning.
 
 ## Live application
-Production URL: https://mealmap-ochre.vercel.app
+Production URL: https://meal-map-analytics.vercel.app
 
 ## What it does
 - Records meal name, date, category, price (INR), calories (kcal), protein (g), and an optional source/note.
