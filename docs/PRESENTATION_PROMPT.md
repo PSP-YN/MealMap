@@ -11,7 +11,7 @@ Create a polished, competition-ready five-slide presentation for the INNOVATE on
 - **Team name:** CHAKRAVYUHA
 - **Project:** MealMap
 - **Project title:** MealMap — Student Food Affordability & Nutrition Analytics
-- **Live prototype:** https://mealmap-ochre.vercel.app
+- **Live prototype:** https://meal-map-analytics.vercel.app
 - **Source repository:** https://github.com/PSP-YN/WasteWise
 
 ## Project summary
