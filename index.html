@@ -54,9 +54,9 @@
           <span class="data-status" id="recordStatus">No records yet</span>
         </div>
         <div class="metrics-grid">
-          <article class="metric-card metric-green"><span class="metric-icon">₹</span><p>Average meal price</p><strong id="avgPrice">—</strong><small>Across recorded meals</small></article>
-          <article class="metric-card metric-cream"><span class="metric-icon">◉</span><p>Average protein</p><strong id="avgProtein">—</strong><small>Per recorded meal</small></article>
-          <article class="metric-card metric-peach"><span class="metric-icon">↗</span><p>Best protein value</p><strong id="bestValue">—</strong><small>Cost per 10g protein</small></article>
+          <article class="metric-card metric-green"><span class="metric-icon">₹</span><p>Average meal price</p><button class="metric-value-action" id="avgPrice" type="button">Add meal</button><small>Across recorded meals</small></article>
+          <article class="metric-card metric-cream"><span class="metric-icon">◉</span><p>Average protein</p><button class="metric-value-action" id="avgProtein" type="button">Add meal</button><small>Per recorded meal</small></article>
+          <article class="metric-card metric-peach"><span class="metric-icon">↗</span><p>Best protein value</p><button class="metric-value-action" id="bestValue" type="button">Add meal</button><small>Cost per 10g protein</small></article>
           <article class="metric-card metric-yellow"><span class="metric-icon">≡</span><p>Meals compared</p><strong id="mealCount">0</strong><small>Your saved meal records</small></article>
         </div>
       </section>
@@ -113,7 +113,7 @@
           <div class="table-scroll">
             <table>
               <thead><tr><th>Meal</th><th>Date</th><th>Price</th><th>Calories</th><th>Protein</th><th>₹ / 10g protein</th><th><span class="sr-only">Actions</span></th></tr></thead>
-              <tbody id="mealTableBody"><tr class="empty-row"><td colspan="7"><div class="table-empty"><span>◌</span><strong>No meal records yet</strong><small>Add a meal using information from a real menu or nutrition source.</small></div></td></tr></tbody>
+              <tbody id="mealTableBody"><tr class="empty-row"><td colspan="7"><div class="table-empty"><span>◌</span><strong>Your meal list starts here</strong><small>Add a meal from a real menu or nutrition source to build your comparison.</small><button class="button button-primary button-small empty-add-meal" data-add-meal type="button">Add meal</button></div></td></tr></tbody>
             </table>
           </div>
           <div class="table-footer"><span id="tableFooterText">Your records are stored locally in this browser.</span><button class="text-button" id="clearAll" type="button" hidden>Clear all records</button></div>
