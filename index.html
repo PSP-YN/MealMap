@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244b3b">
+  <meta name="description" content="MealMap helps students compare meal affordability and nutrition using transparent, user-entered data analytics.">
+  <title>MealMap — Make every meal count</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="MealMap home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M9 4v9M5.5 4v6.5A3.5 3.5 0 0 0 9 14a3.5 3.5 0 0 0 3.5-3.5V4M9 14v14M22 4c-3 3-4 7-4 11h4v13M22 4v11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>meal<span class="brand-accent">map</span></span>
+      </a>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a class="active" href="#overview">Overview</a>
+        <a href="#records">Meal records</a>
+        <a href="#planner">Budget planner</a>
+      </nav>
+      <div class="top-actions">
+        <span class="privacy-pill"><span></span> Your data stays on this device</span>
+        <button class="button button-primary button-small" id="addMealTop" type="button">＋ Add a meal</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="overview">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> FOOD AFFORDABILITY, MADE CLEAR</p>
+          <h1>Make every meal<br><em>count.</em></h1>
+          <p class="hero-description">Compare what you spend with what you get. Turn your own meal and nutrition records into clearer, more affordable food choices.</p>
+          <div class="hero-actions">
+            <button class="button button-primary" id="addMealHero" type="button">Add your first meal <span aria-hidden="true">↗</span></button>
+            <a class="text-link" href="#how-it-works">How it works <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of a balanced meal">
+          <div class="art-stamp">EAT WELL.<br>SPEND WISELY.</div>
+          <div class="plate"><div class="plate-inner"><div class="food-leaf leaf-one"></div><div class="food-leaf leaf-two"></div><div class="food-tomato"></div><div class="food-grain"></div><div class="food-grain grain-two"></div><div class="food-dal"></div></div></div>
+          <span class="art-caption">Better choices start<br>with better information.</span>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="snapshot-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">YOUR DATA AT A GLANCE</p><h2 id="snapshot-title">Meal snapshot</h2></div>
+          <span class="data-status" id="recordStatus">No records yet</span>
+        </div>
+        <div class="metrics-grid">
+          <article class="metric-card metric-green"><span class="metric-icon">₹</span><p>Average meal price</p><strong id="avgPrice">—</strong><small>Across recorded meals</small></article>
+          <article class="metric-card metric-cream"><span class="metric-icon">◉</span><p>Average protein</p><strong id="avgProtein">—</strong><small>Per recorded meal</small></article>
+          <article class="metric-card metric-peach"><span class="metric-icon">↗</span><p>Best protein value</p><strong id="bestValue">—</strong><small>Cost per 10g protein</small></article>
+          <article class="metric-card metric-yellow"><span class="metric-icon">≡</span><p>Meals compared</p><strong id="mealCount">0</strong><small>Your saved meal records</small></article>
+        </div>
+      </section>
+
+      <section class="analysis-grid section-block" aria-label="Meal analytics">
+        <article class="panel chart-panel">
+          <div class="panel-heading"><div><p class="eyebrow">COMPARE YOUR OPTIONS</p><h2>Price vs. protein</h2></div><span class="panel-tag">Your records</span></div>
+          <p class="panel-description">See how meal prices compare with their recorded protein content. Lower cost per 10g protein means better protein affordability.</p>
+          <div class="chart-legend"><span><i class="legend-dot dot-price"></i> Price (₹)</span><span><i class="legend-dot dot-protein"></i> Protein (g)</span></div>
+          <div id="comparisonChart" class="comparison-chart" role="img" aria-label="Meal price and protein comparison chart">
+            <div class="empty-chart"><span>＋</span><strong>Your comparison will appear here</strong><small>Add at least one meal with its price and protein value.</small></div>
+          </div>
+          <div class="chart-footnote">Each bar is scaled within its own measure. Values are taken from your entries.</div>
+        </article>
+
+        <article class="panel insight-panel">
+          <div class="panel-heading"><div><p class="eyebrow">WHAT THE NUMBERS SAY</p><h2>Quick insights</h2></div><span class="insight-icon">✳</span></div>
+          <div id="insights" class="insights-list">
+            <div class="insight-empty"><span>✳</span><p>Insights appear after you add meal records. MealMap only reports patterns supported by your data.</p></div>
+          </div>
+          <div class="method-note"><strong>Transparent by design</strong><span>No AI-generated claims. Every metric is calculated from your saved records.</span></div>
+        </article>
+      </section>
+
+      <section class="section-block records-section" id="records">
+        <div class="section-heading records-heading">
+          <div><p class="eyebrow">BUILD YOUR OWN DATASET</p><h2>Meal records</h2><p class="section-subtitle">Enter meals from a real menu, receipt or verified nutrition label.</p></div>
+          <div class="record-actions">
+            <label class="button button-outline button-small file-button">Import CSV<input id="csvImport" type="file" accept=".csv,text/csv" hidden></label>
+            <button class="button button-outline button-small" id="csvExport" type="button">Export CSV</button>
+            <button class="button button-primary button-small" id="addMealRecords" type="button">＋ Add meal</button>
+          </div>
+        </div>
+
+        <div class="panel form-panel" id="mealFormPanel" hidden>
+          <div class="form-panel-heading"><div><p class="eyebrow">ADD TO YOUR DATASET</p><h3 id="formTitle">Record a meal</h3></div><button class="icon-button" id="closeForm" type="button" aria-label="Close form">×</button></div>
+          <form id="mealForm" novalidate>
+            <div class="form-grid">
+              <label class="field field-wide">Meal name<input id="mealName" name="name" maxlength="70" placeholder="e.g. Vegetable meals" required></label>
+              <label class="field">Meal type<select id="mealCategory" name="category"><option value="Breakfast">Breakfast</option><option value="Lunch">Lunch</option><option value="Dinner">Dinner</option><option value="Snack">Snack</option><option value="Other">Other</option></select></label>
+              <label class="field">Date<input id="mealDate" name="date" type="date" required></label>
+              <label class="field">Price (₹)<input id="mealPrice" name="price" type="number" min="0.01" max="100000" step="0.01" placeholder="e.g. 45" required></label>
+              <label class="field">Calories (kcal)<input id="mealCalories" name="calories" type="number" min="0" max="100000" step="1" placeholder="e.g. 520" required></label>
+              <label class="field">Protein (g)<input id="mealProtein" name="protein" type="number" min="0" max="10000" step="0.1" placeholder="e.g. 14" required></label>
+              <label class="field field-wide">Source / note <span class="optional-label">Optional</span><input id="mealNote" name="note" maxlength="180" placeholder="e.g. Canteen menu, 3 Nov / nutrition label"></label>
+            </div>
+            <p class="form-help">Use the same serving size when comparing meals. Nutrition values should come from a label, recipe calculation or a reliable source.</p>
+            <div class="form-footer"><span class="form-error" id="formError" role="alert"></span><div><button class="button button-quiet button-small" id="cancelForm" type="button">Cancel</button><button class="button button-primary button-small" type="submit" id="saveMeal">Save meal</button></div></div>
+          </form>
+        </div>
+
+        <div class="panel table-panel">
+          <div class="table-toolbar"><div class="table-count" id="tableCount">0 records</div><label class="search-box"><span aria-hidden="true">⌕</span><input id="mealSearch" type="search" placeholder="Search meals..." aria-label="Search meals"></label></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Meal</th><th>Date</th><th>Price</th><th>Calories</th><th>Protein</th><th>₹ / 10g protein</th><th><span class="sr-only">Actions</span></th></tr></thead>
+              <tbody id="mealTableBody"><tr class="empty-row"><td colspan="7"><div class="table-empty"><span>◌</span><strong>No meal records yet</strong><small>Add a meal using information from a real menu or nutrition source.</small></div></td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="tableFooterText">Your records are stored locally in this browser.</span><button class="text-button" id="clearAll" type="button" hidden>Clear all records</button></div>
+        </div>
+      </section>
+
+      <section class="section-block planner-section" id="planner">
+        <div class="section-heading"><div><p class="eyebrow">PLAN WITH YOUR NUMBERS</p><h2>Student budget planner</h2><p class="section-subtitle">Find meal options that fit your daily budget without hiding the nutritional trade-offs.</p></div></div>
+        <div class="planner-grid">
+          <article class="panel planner-input-panel">
+            <span class="planner-symbol">₹</span><h3>Set your daily food budget</h3><p>Enter the amount you can spend on one day's meals.</p>
+            <label class="field">Daily budget (₹)<input id="dailyBudget" type="number" min="1" max="100000" step="1" placeholder="e.g. 120"></label>
+            <label class="field">Minimum protein target (g)<input id="proteinTarget" type="number" min="0" max="1000" step="1" placeholder="Optional"></label>
+            <p class="form-help">This is a comparison aid, not a personalized dietary recommendation.</p>
+            <button class="button button-primary" id="runPlanner" type="button">Analyze my options <span aria-hidden="true">↗</span></button>
+          </article>
+          <article class="panel planner-results-panel" id="plannerResults" aria-live="polite">
+            <div class="planner-empty"><span>◎</span><h3>Your plan starts with your data</h3><p>Add real meal records, set a budget and run the analysis to see which options fit.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-section section-block" id="how-it-works">
+        <div class="how-heading"><p class="eyebrow">SIMPLE, TRACEABLE, USEFUL</p><h2>From meal details<br>to better decisions.</h2></div>
+        <div class="how-steps">
+          <article><span>01</span><div><h3>Record real meals</h3><p>Enter the price and nutrition details for meals you can actually buy.</p></div></article>
+          <article><span>02</span><div><h3>Compare the numbers</h3><p>MealMap calculates averages, ranges and protein affordability consistently.</p></div></article>
+          <article><span>03</span><div><h3>Plan your budget</h3><p>Use your own records to compare options and make informed food choices.</p></div></article>
+        </div>
+      </section>
+
+      <section class="disclaimer">
+        <span>ⓘ</span><p><strong>Data quality matters.</strong> MealMap does not invent meal prices or nutrition facts. Results depend on the accuracy, serving size and freshness of information you enter. Protein affordability is a comparison metric, not a complete measure of dietary quality.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="brand footer-brand" href="#"><span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M9 4v9M5.5 4v6.5A3.5 3.5 0 0 0 9 14a3.5 3.5 0 0 0 3.5-3.5V4M9 14v14M22 4c-3 3-4 7-4 11h4v13M22 4v11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>meal<span class="brand-accent">map</span></span></a>
+      <span>Food affordability through transparent data.</span>
+      <span>Built by CHAKRAVYUHA · INNOVATE</span>
+    </footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
