@@ -6,7 +6,7 @@
 MealMap is a lightweight web application that helps students compare the listed price of meal options with selected serving-level nutrition information. It uses transparent descriptive statistics and data visualization—not AI or machine learning.
 
 ## Live application
-Production URL: To be added after verified Vercel deployment.
+Production URL: https://mealmap-ochre.vercel.app
 
 ## What it does
 - Records meal name, date, category, price (INR), calories (kcal), protein (g), and an optional source/note.
@@ -43,7 +43,7 @@ This is a static website and can be hosted on Vercel, GitHub Pages or another st
 - Average protein = sum of recorded protein / number of records.
 - Median price = median of sorted meal prices.
 - Protein affordability = price / protein × 10 (INR per 10g protein), undefined for zero-protein entries.
-- Budget match = a recorded meal with price less than than or equal to the user's budget.
+- Budget match = a recorded meal with price less than or equal to the user's budget.
 
 Protein affordability is one narrow comparison metric, not a complete nutrition or health score. The budget planner compares individual meal options; it does not create a complete daily diet plan.
 
