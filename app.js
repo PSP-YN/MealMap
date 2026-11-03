@@ -105,6 +105,8 @@
   }
   function closeForm() { $("mealFormPanel").hidden = true; state.editingId = null; $("mealForm").reset(); $("formError").textContent=""; }
   function validateForm(data) {
+    const parsedDate = new Date(data.date + "T00:00:00Z");
+    if (!data.date || Number.isNaN(parsedDate.getTime()) || parsedDate.toISOString().slice(0,10) !== data.date) return "Choose a real calendar date.";
     if (!data.name.trim()) return "Enter a meal name.";
     if (!data.date || !/^\d{4}-\d{2}-\d{2}$/.test(data.date)) return "Choose a valid date.";
     if (!Number.isFinite(data.price) || data.price <= 0 || data.price > 100000) return "Price must be greater than ₹0 and no more than ₹1,00,000.";
@@ -114,13 +116,16 @@
   }
   function submitForm(event) {
     event.preventDefault();
+    if (!$("mealCalories").value.trim()) { $("formError").textContent = "Enter calories from a reliable source, or a clearly stated estimate."; return; }
+    if (!$("mealProtein").value.trim()) { $("formError").textContent = "Enter protein grams from a reliable source, or a clearly stated estimate."; return; }
+    const wasEditing = Boolean(state.editingId);
     const data = {name:$("mealName").value.trim(),category:$("mealCategory").value,date:$("mealDate").value,price:number($("mealPrice").value),calories:number($("mealCalories").value),protein:number($("mealProtein").value),note:$("mealNote").value.trim()};
     const error = validateForm(data); if (error) { $("formError").textContent=error; return; }
     if (state.editingId) {
       const index = state.records.findIndex(r=>r.id===state.editingId);
       if (index>=0) state.records[index] = {...state.records[index],...data};
     } else state.records.push({id:crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(16).slice(2),...data,createdAt:new Date().toISOString()});
-    if (saveRecords()) { closeForm(); render(); notify(state.editingId?"Meal updated.":"Meal saved."); }
+    if (saveRecords()) { closeForm(); render(); notify(wasEditing?"Meal updated.":"Meal saved."); }
   }
   function deleteRecord(id) {
     const record = state.records.find(r=>r.id===id); if (!record) return;
